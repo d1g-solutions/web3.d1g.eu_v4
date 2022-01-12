@@ -3,7 +3,7 @@
 //  - add token
 //  - incerc sa-l fac functional
 //  - ready for deployment via vercel
-//import "./styles.css";
+import "./styles.css";
 import { Box, Button } from "@material-ui/core";
 import React, { useState } from "react";
 import web3 from "web3";
