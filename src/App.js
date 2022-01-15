@@ -2,7 +2,10 @@
 //  - switch/add wallet
 //  - add token
 //  - incerc sa-l fac functional
-//  - ready for deployment via vercel
+//  - ready for deployment via vercel si sau Netlify
+//20220115
+//  - incarcat in Visual Studio Code 
+//  - Netlify - Auto publishing is on
 import "./styles.css";
 import { Box, Button } from "@material-ui/core";
 import React, { useState } from "react";
