@@ -3,10 +3,15 @@
 //  - add token
 //  - incerc sa-l fac functional
 //  - ready for deployment via vercel si sau Netlify
+
 //20220115
 //  - incarcat in Visual Studio Code ca si V4
 //  - Netlify - Auto publishing is on pe V4
 //  - Vercel - Auto publishing in on pe V4
+// https://csb-8zjcw.netlify.app/
+// https://csb-uxj87.vercel.app/
+// web3.d1g.eu - cname.vercel-dns.com
+
 import "./styles.css";
 import { Box, Button } from "@material-ui/core";
 import React, { useState } from "react";
