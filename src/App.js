@@ -4,8 +4,9 @@
 //  - incerc sa-l fac functional
 //  - ready for deployment via vercel si sau Netlify
 //20220115
-//  - incarcat in Visual Studio Code 
-//  - Netlify - Auto publishing is on
+//  - incarcat in Visual Studio Code ca si V4
+//  - Netlify - Auto publishing is on pe V4
+//  - Vercel - Auto publishing in on pe V4
 import "./styles.css";
 import { Box, Button } from "@material-ui/core";
 import React, { useState } from "react";
