@@ -37,13 +37,10 @@ function App() {
   const [token, setToken] = useState("");
   const [tokenid, setTokenid] = useState("");
 
-  
-
   let w3 = new web3(window.ethereum);
   const { ethereum } = window;
 
   let nft;
-  
 
   //Created check function to see if the MetaMask extension is installed
   const isMetaMaskInstalled = () => {
