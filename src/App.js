@@ -12,6 +12,10 @@
 // https://csb-uxj87.vercel.app/
 // web3.d1g.eu - cname.vercel-dns.com
 
+//20220106
+// eth-crypto - https://ethereum.stackexchange.com/questions/3092/how-to-encrypt-a-message-with-the-public-key-of-an-ethereum-address
+
+
 import "./styles.css";
 import { Box, Button } from "@material-ui/core";
 import React, { useState } from "react";
