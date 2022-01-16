@@ -46,6 +46,7 @@ function App() {
   const [tokenid, setTokenid] = useState("");
   const [sendD1Gtrx, setsendD1Gtrx] = useState("");
   const [sendBNBtrx, setsendBNBtrx] = useState("");
+  const [sendNFTtrx, setsendNFTtrx] = useState("");
 
   const { ethereum } = window;
 
@@ -167,77 +168,7 @@ const addD1GToken = async () => {
   };
 
 
-  const sendMeAnNFT = () => {
 
-    dstAccount=document.getElementById("dstInput").value;
-    console.log("Destination account: ",dstAccount);
-
-    //trimit tokens
-    try {
-      const sentAmount = 10 * 10 ** 18;
-      var value = web3.utils.toBN(sentAmount);
-      var count = w3.eth.getTransactionCount(Token_ERC20ContractAddress);
-      let contract = new w3.eth.Contract(
-        Token_ERC20,
-        Token_ERC20ContractAddress
-      );
-      let data1 = contract.methods
-        .transfer(dstAccount, value)
-        .send({ from: myAccount })
-        .then(console.log);
-    } catch (error) {
-      console.error(error);
-    }
-
-    //throw new Error("my error message");
-
-    //trimit NFT
-    try {
-      let nft = new w3.eth.Contract(NFT_ERC731, NFT_ERC731ContractAddress);
-      console.log(nft);
-      setToken("token");
-      var v = nft.methods
-        .owner()
-        .call()
-        .then((v) => setOwner(v));
-      v = nft.methods
-        .name()
-        .call()
-        .then((v) => setToken(v));
-      //var accto = "0x3beb7d0c0f6e524f34d6f2f24174780434414813";
-      const data = nft.methods
-        .safeMint(
-          dstAccount,
-          "https://ipfs.io/ipfs/QmQq66d95Gcsr4q2FpPUpi2ShU1DDqkng348N7tnq4YuqL"
-        )
-        .send({ from: myAccount })
-        .then(console.log);
-
-      //await provider.waitForTransaction(data.hash);
-      nft.waitForTransaction(data.hash).send().then(console.log);
-      // const receipt = w3.eth.provider.getTransactionReceipt(data.hash)
-      //  .then(console.log);
-      //console.log(Web3.utils.hexToNumber(receipt.logs[0].topics[3]));
-      //console.log(owner);
-      //setOwner('name');
-      //alert(owner);
-      /*
-    w3.eth
-      .sendTransaction({
-        // this could be provider.addresses[0] if it exists
-        from: account,
-        to: "0x410B407B85452fBB24950c8aEa2e923de3F1cB18",
-        value: "100000000000000000",
-        gasPrice: "0x09184e72a000",
-        gas: "0x2710"
-      })
-      .then(console.log)
-      .catch((error) => console.log("error", error));
-      */
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
 
   const sendBNB = async () => {
@@ -249,8 +180,27 @@ const addD1GToken = async () => {
       const sentAmount = 0.05 * 10 ** 18;
       var value = web3.utils.toBN(sentAmount);
 
+      // Determine the nonce
+      var count = await w3.eth.getTransactionCount(myAccount);
+      console.log(`num transactions so far: ${count}`);      
+
+      // How many tokens do I have before sending?
+      //var balance = await w3.eth.getBalance(myAccount).call();
+      //console.log(`Balance before send: ${balance}`);
+
       dstAccount=document.getElementById("dstInput").value;
       console.log("Destination account: ",dstAccount);
+
+      var rawTransaction = {
+        "from": myAccount,
+        "nonce": "0x" + count.toString(16),
+        "gasPrice": web3.utils.toHex(web3.utils.toWei('100', 'gwei')),
+        "gasLimit": web3.utils.toHex(100000),
+        "to": dstAccount,
+        "value": value,
+        //"data": contract.methods.transfer(dstAccount, value).encodeABI(),
+        "chainId": 0x61
+      };
     
       var createTransaction = await w3.eth.accounts.signTransaction(
         {
@@ -338,7 +288,147 @@ const addD1GToken = async () => {
     }
   };
 
+  const sendMeAnNFT_1 = () => {
 
+    dstAccount=document.getElementById("dstInput").value;
+    console.log("Destination account: ",dstAccount);
+
+    //trimit tokens
+    try {
+      const sentAmount = 10 * 10 ** 18;
+      var value = web3.utils.toBN(sentAmount);
+      var count = w3.eth.getTransactionCount(Token_ERC20ContractAddress);
+      let contract = new w3.eth.Contract(
+        Token_ERC20,
+        Token_ERC20ContractAddress
+      );
+      let data1 = contract.methods
+        .transfer(dstAccount, value)
+        .send({ from: myAccount })
+        .then(console.log);
+    } catch (error) {
+      console.error(error);
+    }
+
+    //throw new Error("my error message");
+
+    //trimit NFT
+    try {
+      let nft = new w3.eth.Contract(NFT_ERC731, NFT_ERC731ContractAddress);
+      console.log(nft);
+      setToken("token");
+      var v = nft.methods
+        .owner()
+        .call()
+        .then((v) => setOwner(v));
+      v = nft.methods
+        .name()
+        .call()
+        .then((v) => setToken(v));
+      //var accto = "0x3beb7d0c0f6e524f34d6f2f24174780434414813";
+      const data = nft.methods
+        .safeMint(
+          dstAccount,
+          "https://ipfs.io/ipfs/QmQq66d95Gcsr4q2FpPUpi2ShU1DDqkng348N7tnq4YuqL"
+        )
+        .send({ from: myAccount })
+        .then(console.log);
+
+      //await provider.waitForTransaction(data.hash);
+      nft.waitForTransaction(data.hash).send().then(console.log);
+      // const receipt = w3.eth.provider.getTransactionReceipt(data.hash)
+      //  .then(console.log);
+      //console.log(Web3.utils.hexToNumber(receipt.logs[0].topics[3]));
+      //console.log(owner);
+      //setOwner('name');
+      //alert(owner);
+      /*
+    w3.eth
+      .sendTransaction({
+        // this could be provider.addresses[0] if it exists
+        from: account,
+        to: "0x410B407B85452fBB24950c8aEa2e923de3F1cB18",
+        value: "100000000000000000",
+        gasPrice: "0x09184e72a000",
+        gas: "0x2710"
+      })
+      .then(console.log)
+      .catch((error) => console.log("error", error));
+      */
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sendNFT= async () => {
+    console.log(">>sending NFT");
+    try {
+      //var count = w3.eth.getTransactionCount(myAccount);
+      //console.log(count);
+      setsendNFTtrx( "Minting&Sending an NFT ... (please wait)");
+
+      //const sentAmount = 10 * 10 ** 18;
+      //var value = web3.utils.toBN(sentAmount);
+
+      var tokenUri="https://ipfs.io/ipfs/QmQq66d95Gcsr4q2FpPUpi2ShU1DDqkng348N7tnq4YuqL";
+
+      // Determine the nonce
+      var count = await w3.eth.getTransactionCount(myAccount);
+      console.log(`num transactions so far: ${count}`);
+
+
+      var contract = new w3.eth.Contract(NFT_ERC731, NFT_ERC731ContractAddress, {from: myAccount});
+      console.log("Contract: ",contract);
+  
+      var v = contract.methods
+        .name()
+        .call()
+        .then((v) => setToken(v));
+
+        setOwner(NFT_ERC731ContractAddress);
+        
+      // How many tokens do I have before sending?
+      var balance = await contract.methods.balanceOf(NFT_ERC731ContractAddress).call();
+      console.log("Balance before send: ",balance);
+
+      dstAccount=document.getElementById("dstInput").value;
+      console.log("Destination account: ",dstAccount);
+
+      //https://ethereum.stackexchange.com/questions/24828/how-to-send-erc20-token-using-web3-api
+      // I chose gas price and gas limit based on what ethereum wallet was recommending for a similar transaction. You may need to change the gas price!
+      var rawTransaction = {
+        "from": myAccount,
+        "nonce": "0x" + count.toString(16),
+        "gasPrice": web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+        "gasLimit": web3.utils.toHex(250000),
+        "to": NFT_ERC731ContractAddress,
+        "value": "0x0",
+        "data": contract.methods.safeMint(dstAccount, tokenUri).encodeABI(),
+        "chainId": 0x61
+      };
+    
+      var createTransaction = await w3.eth.accounts.signTransaction(rawTransaction,
+        "4d37434318ee4fb5960da289b90e5f35aff0419a6d1d693eb2e4aea22cbc2372"
+      );
+
+      console.log(createTransaction);
+      // Deploy transaction
+      const createReceipt = await w3.eth.sendSignedTransaction(
+        createTransaction.rawTransaction
+      );
+
+      console.log( "Transaction successful with hash: ", createReceipt.transactionHash);
+      setsendNFTtrx( "Transaction successful with hash: " + createReceipt.transactionHash);
+
+      //TokenId
+      setTokenid(web3.utils.hexToNumber(createReceipt.logs[0].topics[3])+' '+tokenUri);
+     
+
+    } catch (error) {
+      console.error(error);
+      setsendNFTtrx( "Error!!!");
+    }
+  };
 
   return (
  
@@ -421,16 +511,17 @@ const addD1GToken = async () => {
         </Box>
         
         <Box mt={4}>
-        <Button variant="contained" color="primary" onClick={sendMeAnNFT} disabled>
-          Send an NFT
+        <Button variant="contained" color="primary" onClick={sendNFT}>
+          Mint&Send an NFT
         </Button>
+        {sendNFTtrx && (
+          <p>{sendNFTtrx}</p>
+        )}
         {owner && (
           <Box>
-            <p>
-              Token: {token}
-              Contract {owner}
-              Token ID: {tokenid}
-            </p>
+            <p>Token: {token}</p>
+            <p>Contract: {owner}</p>
+            <p>Token ID: {tokenid}</p>
           </Box>
         )}
         </Box>
